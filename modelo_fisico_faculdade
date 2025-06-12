@@ -1,0 +1,91 @@
+DROP DATABASE IF EXISTS faculdade;
+CREATE DATABASE faculdade;
+USE faculdade;
+
+-- Tabela de Cursos
+CREATE TABLE tbl_curso (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(45),
+    turno VARCHAR(10),
+    modalidade VARCHAR(10),
+    descricao_curso VARCHAR(45),
+    duracao_meses VARCHAR(20)
+);
+
+-- Tabela de Alunos
+CREATE TABLE tbl_aluno (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50),
+    cpf VARCHAR(15),
+    data_nascimento VARCHAR(8),
+    rg VARCHAR(15),
+    id_curso INT,
+    FOREIGN KEY (id_curso) REFERENCES tbl_curso(id)
+);
+
+-- Tabela de Professores
+CREATE TABLE tbl_professor (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50),
+    cpf VARCHAR(15),
+    data_nascimento VARCHAR(8),
+    rg VARCHAR(15)
+);
+
+-- Tabela de Endereço
+CREATE TABLE tbl_endereco (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    logradouro VARCHAR(50),
+    bairro VARCHAR(45),
+    cep VARCHAR(8),
+    estado VARCHAR(15),
+    pais VARCHAR(20),
+    cidade VARCHAR(20),
+    id_aluno INT,
+    id_professor INT,
+    FOREIGN KEY (id_aluno) REFERENCES tbl_aluno(id),
+    FOREIGN KEY (id_professor) REFERENCES tbl_professor(id)
+);
+
+-- Tabela de Telefone
+CREATE TABLE tbl_telefone (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    numero VARCHAR(12),
+    prefixo VARCHAR(5),
+    id_aluno INT,
+    id_professor INT,
+    FOREIGN KEY (id_aluno) REFERENCES tbl_aluno(id),
+    FOREIGN KEY (id_professor) REFERENCES tbl_professor(id)
+);
+
+-- Tabela de Email
+CREATE TABLE tbl_email (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(150),
+    id_aluno INT,
+    id_professor INT,
+    FOREIGN KEY (id_aluno) REFERENCES tbl_aluno(id),
+    FOREIGN KEY (id_professor) REFERENCES tbl_professor(id)
+);
+
+-- Tabela de Matérias
+CREATE TABLE tbl_materia (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(45),
+    semestre VARCHAR(45),
+    carga_horaria VARCHAR(45),
+    id_professor INT,
+    FOREIGN KEY (id_professor) REFERENCES tbl_professor(id)
+);
+
+-- Tabela de Aluno x Matéria (relacionamento N:N com notas)
+CREATE TABLE tbl_aluno_materia (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_aluno INT,
+    id_materia INT,
+    frequencia VARCHAR(20),
+    nota_1 VARCHAR(20),
+    nota_2 VARCHAR(20),
+    FOREIGN KEY (id_aluno) REFERENCES tbl_aluno(id),
+    FOREIGN KEY (id_materia) REFERENCES tbl_materia(id)
+);
